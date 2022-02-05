@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Basic Banking App</string>
+    <string name="customer_name">Murray Joanne</string>
 </resources>

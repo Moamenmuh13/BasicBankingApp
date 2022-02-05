@@ -45,16 +45,16 @@ class DatabaseHandler(context: Context) :
     }
 
     // add user
-    fun addUser(user: User): Long {
+    fun addUser(customer: Customer): Long {
         val db = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(KEY_name, user.name) // inserting name
-        contentValues.put(KEY_email, user.email) // inserting email
-        contentValues.put(KEY_personalID, user.personalID) // inserting personalID
-        contentValues.put(KEY_currentBalance, user.currentBalance) // inserting currentBalance
-        contentValues.put(KEY_cvv, user.cvv) // inserting cvv
-        contentValues.put(KEY_cardNum, user.cardNum) // inserting cardNum
-        contentValues.put(KEY_cardType, user.cardType) // inserting cardType
+        contentValues.put(KEY_name, customer.name) // inserting name
+        contentValues.put(KEY_email, customer.email) // inserting email
+        contentValues.put(KEY_personalID, customer.personalID) // inserting personalID
+        contentValues.put(KEY_currentBalance, customer.currentBalance) // inserting currentBalance
+        contentValues.put(KEY_cvv, customer.cvv) // inserting cvv
+        contentValues.put(KEY_cardNum, customer.cardNum) // inserting cardNum
+        contentValues.put(KEY_cardType, customer.cardType) // inserting cardType
 
 
         // inserting row
@@ -65,29 +65,29 @@ class DatabaseHandler(context: Context) :
 
 
     // add user
-    fun updateUser(user: User): Int {
+    fun updateUser(customer: Customer): Int {
         val db = this.writableDatabase
 
         val contentValues = ContentValues()
-        contentValues.put(KEY_name, user.name) // inserting name
-        contentValues.put(KEY_email, user.email) // inserting email
-        contentValues.put(KEY_personalID, user.personalID) // inserting personalID
-        contentValues.put(KEY_currentBalance, user.currentBalance) // inserting currentBalance
-        contentValues.put(KEY_cvv, user.cvv) // inserting cvv
-        contentValues.put(KEY_cardNum, user.cardNum) // inserting cardNum
-        contentValues.put(KEY_cardType, user.cardType) // inserting cardType
+        contentValues.put(KEY_name, customer.name) // inserting name
+        contentValues.put(KEY_email, customer.email) // inserting email
+        contentValues.put(KEY_personalID, customer.personalID) // inserting personalID
+        contentValues.put(KEY_currentBalance, customer.currentBalance) // inserting currentBalance
+        contentValues.put(KEY_cvv, customer.cvv) // inserting cvv
+        contentValues.put(KEY_cardNum, customer.cardNum) // inserting cardNum
+        contentValues.put(KEY_cardType, customer.cardType) // inserting cardType
 
 
         // inserting row
-        val success = db.update(TABLE_CONTACTS, contentValues, KEY_ID + "=" + user.id, null )
+        val success = db.update(TABLE_CONTACTS, contentValues, KEY_ID + "=" + customer.id, null)
         db.close()
         return success
     }
 
     //read data
     @SuppressLint("Range")
-    fun getData(): ArrayList<User> {
-        val userList: ArrayList<User> = ArrayList()
+    fun getData(): ArrayList<Customer> {
+        val customerList: ArrayList<Customer> = ArrayList()
         val selectQuery = "SELECT  * FROM $TABLE_CONTACTS"
 
         val db = this.readableDatabase
@@ -103,8 +103,8 @@ class DatabaseHandler(context: Context) :
         var id: Int
         var name: String
         var email: String
-        var currentBalance: Int
-        var personalID: Long
+        var currentBalance: String
+        var personalID: String
         var cvv: Int
         var cardNum: Long
         var cardType: String
@@ -113,12 +113,12 @@ class DatabaseHandler(context: Context) :
                 id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
                 name = cursor.getString(cursor.getColumnIndex(KEY_name))
                 email = cursor.getString(cursor.getColumnIndex(KEY_email))
-                currentBalance = cursor.getInt(cursor.getColumnIndex(KEY_currentBalance))
-                personalID = cursor.getLong(cursor.getColumnIndex(KEY_personalID))
+                currentBalance = cursor.getString(cursor.getColumnIndex(KEY_currentBalance))
+                personalID = cursor.getString(cursor.getColumnIndex(KEY_personalID))
                 cvv = cursor.getInt(cursor.getColumnIndex(KEY_cvv))
                 cardNum = cursor.getLong(cursor.getColumnIndex(KEY_cardNum))
                 cardType = cursor.getString(cursor.getColumnIndex(KEY_cardType))
-                val user = User(
+                val user = Customer(
                     id,
                     name,
                     email,
@@ -128,9 +128,9 @@ class DatabaseHandler(context: Context) :
                     cardNum,
                     cardType
                 )
-                userList.add(user)
+                customerList.add(user)
             } while (cursor.moveToFirst())
         }
-        return userList
+        return customerList
     }
 }
