@@ -6,9 +6,10 @@ data class Customer(
     var email: String?,
     var currentBalance: String?,
     var personalID: String?,
-    var cvv: Int?,
-    var cardNum: Long?,
-    var cardType: String?
+    var cvv: String?,
+    var cardNum: String?,
+    var cardType: String?,
+    var customerImg: Int? = null
 ) {
 
 //    constructor(customerImg: Int?) : this(

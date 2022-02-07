@@ -26,7 +26,7 @@ class CustomerAdapter(private val dataSet: ArrayList<Customer>, private val cont
         with(holder) {
             with(item) {
                 binding.customerName.text = item.name
-//                Glide.with(context).load(item.customerImg).into(binding.customerImg)
+                Glide.with(context).load(item.customerImg).into(binding.customerImg)
             }
         }
     }
