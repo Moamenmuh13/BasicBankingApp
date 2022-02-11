@@ -4,10 +4,10 @@ data class Customer(
     var id: Int?,
     var name: String?,
     var email: String?,
-    var currentBalance: String?,
+    var currentBalance: Long?,
     var personalID: String?,
     var cvv: String?,
-    var cardNum: String?,
+    var cardNum: Long?,
     var cardType: String?,
     var customerImg: Int? = null
 ) {

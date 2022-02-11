@@ -17,7 +17,7 @@ class DatabaseHandler(context: Context) :
         private const val TAG = "DatabaseHandler"
 
         private const val DATABASE_NAME = "CustomerDatabase"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 3
         private const val TABLE_CONTACTS = " CustomerTable"
 
         private const val KEY_ID = "_id"
@@ -37,10 +37,10 @@ class DatabaseHandler(context: Context) :
             ("Create Table " + TABLE_CONTACTS + " (" + KEY_ID + " INTEGER PRIMARY KEY, "
                     + KEY_name + " TEXT, "
                     + KEY_email + " TEXT, "
-                    + KEY_personalID + " TEXT, "
-                    + KEY_currentBalance + " TEXT, "
-                    + KEY_cvv + " TEXT, "
-                    + KEY_cardNum + " TEXT, "
+                    + KEY_personalID + " TEXT UNIQUE, "
+                    + KEY_currentBalance + " INTEGER, "
+                    + KEY_cvv + " TEXT UNIQUE, "
+                    + KEY_cardNum + " INTEGER UNIQUE, "
                     + KEY_cardType + " TEXT" + ")")
         db?.execSQL(CREATE_CONTACTS_TABLE)
     }
@@ -57,12 +57,9 @@ class DatabaseHandler(context: Context) :
         contentValues.put(KEY_name, customer.name) // inserting name
         contentValues.put(KEY_email, customer.email) // inserting email
         contentValues.put(KEY_personalID, customer.personalID) // inserting personalID
-        contentValues.put(
-            KEY_currentBalance,
-            customer.currentBalance + ""
-        ) // inserting currentBalance
+        contentValues.put(KEY_currentBalance, customer.currentBalance) // inserting currentBalance
         contentValues.put(KEY_cvv, customer.cvv + "") // inserting cvv
-        contentValues.put(KEY_cardNum, customer.cardNum + "") // inserting cardNum
+        contentValues.put(KEY_cardNum, customer.cardNum) // inserting cardNum
         contentValues.put(KEY_cardType, customer.cardType) // inserting cardType
 
 
@@ -109,24 +106,23 @@ class DatabaseHandler(context: Context) :
             db.execSQL(selectQuery)
             return ArrayList()
         }
-
         var id: Int
         var name: String
         var email: String
-        var currentBalance: String
+        var currentBalance: Long
         var personalID: String
         var cvv: String
-        var cardNum: String
+        var cardNum: Long
         var cardType: String
         if (cursor.moveToFirst()) {
             do {
                 id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
                 name = cursor.getString(cursor.getColumnIndex(KEY_name))
                 email = cursor.getString(cursor.getColumnIndex(KEY_email))
-                currentBalance = cursor.getString(cursor.getColumnIndex(KEY_currentBalance))
+                currentBalance = cursor.getLong(cursor.getColumnIndex(KEY_currentBalance))
                 personalID = cursor.getString(cursor.getColumnIndex(KEY_personalID))
                 cvv = cursor.getString(cursor.getColumnIndex(KEY_cvv))
-                cardNum = cursor.getString(cursor.getColumnIndex(KEY_cardNum))
+                cardNum = cursor.getLong(cursor.getColumnIndex(KEY_cardNum))
                 cardType = cursor.getString(cursor.getColumnIndex(KEY_cardType))
                 val user = Customer(
                     id,
@@ -141,6 +137,7 @@ class DatabaseHandler(context: Context) :
                 customerList.add(user)
             } while (cursor.moveToFirst())
         }
+        cursor.close()
         return customerList
     }
 }
